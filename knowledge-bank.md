@@ -98,3 +98,17 @@ or add a dated note explaining why there's nothing new. No silent runs on the ba
 
 ## Session Summaries
 [IMPROVEMENT] 2026-06-03 12:00 — Fixed convergence_ratio sentinel (1.0→np.inf) and double-adjust_default bug in apply_task_type_profile; +4 tests (invariant, inf sentinel, single-adjust, exact 1/3) | blockers: 0 added/resolved | discoveries: 2 (convergence_ratio semantic ambiguity, pre-adaptation intermediate-corruption via clamping) | bank entries: 1
+
+[IMPROVEMENT] 2026-06-04 03:46 — feat: RecursiveReasoningEngine to_dict/from_dict serialization, recall tokenization fix (strip punctuation), ActionRisk enum fix (MEDIUM→MODERATE), ruff lint cleanup (42+ unused imports, duplicate methods, E741), frozendict utility class, 31 cross-pillar integration tests (cognition→praxis, praxis→mneme, mneme→cognition, full pipeline, serialization round-trips) — 794/794 green | blockers: 0 added/0 resolved | discoveries: 3 (recall punctuation mismatch, ActionRisk enum naming inconsistency, duplicate to_dict/from_dict in HierarchicalMneme) | bank entries: 2
+
+### DISCOVERY: Recall punctuation mismatch breaks memory retrieval — 2026-06-03
+- **Finding**: HierarchicalMneme.recall() tokenizes with simple split() while store() preserves punctuation, causing entries like "Action 'deploy' completed successfully" to be unsearchable by the word "deploy" (stored as "'deploy'" with quotes)
+- **Impact**: Memory retrieval is unreliable for any entry with quoted/punctuated content — critical for action tracking
+- **Discovered by**: isonome-improvement agent (cross-pillar integration testing)
+- **Fix**: strip punctuation from tokens in recall() so bare words match punctuated entries
+
+### DISCOVERY: ActionRisk enum naming inconsistency (MEDIUM vs MODERATE) — 2026-06-03
+- **Finding**: Praxis orchestrator defined ActionRisk with MODERATE but some code referenced MEDIUM, causing KeyError in risk assessment
+- **Impact**: Risk assessment on actions with medium risk would crash; cross-pillar tests caught this
+- **Discovered by**: isonome-improvement agent (cross-pillar integration testing)
+- **Fix**: Aligned all references to use MODERATE (the actual enum value)
