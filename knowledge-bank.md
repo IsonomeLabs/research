@@ -128,3 +128,26 @@ or add a dated note explaining why there's nothing new. No silent runs on the ba
 - **Discovered by**: isonome-dashboard agent
 - **Validation**: confirmed (7 entries stored, stats showed 0, len(_working) showed 7)
 - **Fix**: Dashboard uses len() as primary with stats as fallback
+
+[IMPROVEMENT] 2026-06-04 06:00 — feat: Calibration-Based Rehearsal Scheduling (iter-018). RehearsalScheduler class with interval computation (significance factor, calibration modes, tension modulation). Two integration methods on HierarchicalMneme: get_rehearsal_candidates (urgency-sorted) and rehearse_due_candidates. Fixed 3 bugs from incomplete prior run: missing set_calibration_state signature, inverted significance formula (1/(0.5+sig)→0.5+sig), inverted tension modifier sign (-0.15→+0.15). 27 new tests, 821/821 green. | blockers: 0 added/0 resolved | discoveries: 3 | bank entries: 3
+
+### DISCOVERY: Inverted significance factor in RehearsalScheduler — 2026-06-04
+- **Finding**: The significance_factor formula used 1/(0.5+significance) which made high-significance entries get SHORTER intervals — the exact opposite of the intended behavior (high sig = more stable = rehearse less often)
+- **Impact**: Any system using the RehearsalScheduler for interval computation would under-rehearse important memories and over-rehearse unimportant ones
+- **Discovered by**: isonome-improvement (test failure analysis)
+- **Validation**: confirmed (test_significance_factor failed with inverted formula)
+- **Fix**: Changed to 0.5 + significance (range 0.5-1.5), so high sig → larger factor → longer interval
+
+### DISCOVERY: Tension modifier sign inversion in RehearsalScheduler — 2026-06-04
+- **Finding**: tension_modifier = -0.15 * consolidate_prune_position gave consolidate (neg position) a positive modifier (longer intervals) and prune (pos position) a negative modifier (shorter intervals) — the exact opposite of the docstring intent
+- **Impact**: Consolidate mode would extend rehearsal intervals (weakening memories) while prune mode would shorten them (strengthening memories that should decay)
+- **Discovered by**: isonome-improvement (test failure analysis)
+- **Validation**: confirmed (test_consolidate_shortens_interval and test_prune_extends_interval both failed)
+- **Fix**: Changed to +0.15 * consolidate_prune_position so consolidate→shorter, prune→longer
+
+### DISCOVERY: Double-counting rehearsal spacing in interval formula — 2026-06-04
+- **Finding**: The original interval formula multiplied effective_half_life (which already includes 1.5^rehearsal_count) by a separate rehearsal_expansion of 1.3^rehearsal_count, double-counting the spacing effect
+- **Impact**: Intervals for well-rehearsed entries would be ~1.5^n × 1.3^n = 1.95^n instead of the intended 1.5^n, making them rehearse far less often than expected
+- **Discovered by**: isonome-improvement (test_rehearsal_expansion ratio was 7.4x instead of ~2.2x)
+- **Validation**: confirmed (ratio calculation showed compound growth)
+- **Fix**: Removed separate rehearsal_expansion factor; effective_half_life's built-in 1.5^count is sufficient
