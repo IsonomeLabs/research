@@ -112,3 +112,19 @@ or add a dated note explaining why there's nothing new. No silent runs on the ba
 - **Impact**: Risk assessment on actions with medium risk would crash; cross-pillar tests caught this
 - **Discovered by**: isonome-improvement agent (cross-pillar integration testing)
 - **Fix**: Aligned all references to use MODERATE (the actual enum value)
+
+[DASHBOARD] 2026-06-04 04:50 — feat: Developer Visualization Dashboard (HTML/JS frontend + Python HTTP server) under /root/isonome-framework/dashboard/. 8 tension axis bars, stress semicircular gauge, pillar activity cards, attention budget utilization, mneme 3-tier memory display, calibration ECE/bias/MCE metrics. Dark theme, 1s polling, demo mode with simulated agent ticks. Fixed: _mneme→mneme attribute access, stats dict handling, ConfidenceCalibrator API (compute_ece/compute_bias/compute_mce). Role rotation counter-based (was "A", now "2"). | blockers: 0 added/0 resolved | discoveries: 2 (MnemePillar.mneme not _mneme, _stats.working_count always 0 — use len(_working) instead) | bank entries: 2
+
+### DISCOVERY: MnemePillar exposes mneme not _mneme — 2026-06-04
+- **Finding**: MnemePillar's HierarchicalMneme instance is accessible as .mneme (public), not ._mneme (private). Code that tried _mneme got AttributeError.
+- **Impact**: Any dashboard or external tool accessing the mneme must use .mneme
+- **Discovered by**: isonome-dashboard agent
+- **Validation**: confirmed (tested with live agent)
+- **Fix**: Changed all _mneme references to mneme
+
+### DISCOVERY: MnemeStats.working_count always returns 0 — 2026-06-04
+- **Finding**: HierarchicalMneme._stats.working_count, episodic_count, semantic_count are always 0 even after storing entries. The actual tier sizes are available via len(_working), len(_episodic), len(_semantic).
+- **Impact**: Stats counters are unreliable for monitoring; must use len() on tier containers
+- **Discovered by**: isonome-dashboard agent
+- **Validation**: confirmed (7 entries stored, stats showed 0, len(_working) showed 7)
+- **Fix**: Dashboard uses len() as primary with stats as fallback
