@@ -41,6 +41,13 @@ or add a dated note explaining why there's nothing new. No silent runs on the ba
 - **Quality**: ★★★★★ (26 dedicated tests + 732 full-suite green)
 - **Usage count**: 1
 
+### PATTERN: Velocity reversal as leading oscillation indicator — 2026-06-04
+- **What**: Tracking per-axis velocity (finite difference) and counting sign reversals detects oscillation 2-3 ticks before position stddev exceeds threshold; reversal rate > 0.4 predicts imminent oscillation
+- **Applies to**: EquilibriumEngine, any feedback loop system that needs preemptive damping
+- **Source**: iteration-021-tension-velocity-tracking.md
+- **Quality**: ★★★★★ (59 dedicated tests + 1062 full-suite green)
+- **Usage count**: 1
+
 ## Discoveries
 
 <!-- Format:
@@ -76,6 +83,11 @@ or add a dated note explaining why there's nothing new. No silent runs on the ba
 ### INTEGRATION: Calibration Weight Rebalance ↔ AttentionEquilibriumSystem — 2026-06-03
 - **Connection**: _modulate_weights() reads calibration state; collect_garbage() reports rebalance deltas in GarbageCollectionReport
 - **Protocol**: Internal method call; calibration state set via set_calibration_state(); zero-sum α↔β shift composed additively with tension weights
+- **Status**: active
+
+### INTEGRATION: TensionVelocityTracker ↔ EquilibriumEngine — 2026-06-04
+- **Connection**: Engine feeds position updates to tracker after each apply_feedback/batch; tracker exposes velocity/momentum/reversal data via engine.velocity_tracker property and PillarEquilibriumView
+- **Protocol**: Opt-in via enable_velocity_tracking flag or explicit velocity_tracker constructor param; auto-registers all axes; reset co-resets
 - **Status**: active
 
 ## Quality Feedback (cross-agent ratings)
@@ -198,4 +210,31 @@ or add a dated note explaining why there's nothing new. No silent runs on the ba
 
 ### Quality Rating
 - iter-020 delegation outcome tracking: **4/5** — Clean implementation, well-tested, conservative adaptation. Would be 5/5 with a live simulation demo.
+
+## Session: 2026-06-04 — iter-021 Tension Velocity Tracking & Momentum-Aware Restoration
+
+**Agent:** isonome-framework cron (Role A: Improvement)
+
+### Work Completed
+1. **New class: TensionVelocityTracker** (`isonome/equilibrium/velocity.py`): Per-axis velocity tracking via finite difference, reversal detection (sign change + magnitude threshold), momentum scores (velocity × drift-direction → positive=heading home, negative=drifting away), reversal rate computation, oscillation prediction (is_oscillation_imminent — predictive via velocity reversal rate vs post-hoc stddev).
+2. **Engine integration**: `velocity_tracker` / `enable_velocity_tracking` params on EquilibriumEngine constructor; tracker fed after apply_feedback and apply_feedback_batch; reset and serialization round-trip support.
+3. **PillarEquilibriumView velocity data**: New properties `velocities`, `momentum_scores`, `oscillation_imminent`; convenience methods `get_velocity()`, `get_momentum_score()`, `is_axis_drifting()`; summary includes velocity when available.
+4. **Bug fix**: Reversal detection was comparing against `_prev_velocity` (2 updates ago) instead of current `_velocity` (previous update), missing first sign change after steady movement.
+5. **59 new tests**: Construction, registration, velocity computation, momentum scores, reversal detection, reversal rate & prediction, window rollover, reset, serialization, engine integration, view integration, adaptive damping coexistence, edge cases.
+
+### Test Count
+- Before: 1003 tests
+- After: 1062 tests (+59 new)
+
+### Pattern Discovered
+Velocity reversal rate is a leading indicator of oscillation — it detects oscillation tendency 2-3 ticks before position stddev exceeds the threshold. This enables preemptive damping.
+
+### Architecture Addition
+```
+Feedback → Engine.apply_feedback()
+  ├── axis.adjust(delta)           # position
+  ├── tracker.on_position_update() # velocity (NEW)
+  └── adaptive_damping.on_feedback() # damping
+```
+
 
