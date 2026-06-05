@@ -151,3 +151,51 @@ or add a dated note explaining why there's nothing new. No silent runs on the ba
 - **Discovered by**: isonome-improvement (test_rehearsal_expansion ratio was 7.4x instead of ~2.2x)
 - **Validation**: confirmed (ratio calculation showed compound growth)
 - **Fix**: Removed separate rehearsal_expansion factor; effective_half_life's built-in 1.5^count is sufficient
+
+
+---
+
+## Session: 2026-06-04 — Isonome Iter-019 (Role A: Improvement)
+
+### Completed: Calibration-Gated Delegation (iter-019)
+
+**Feature**: DelegationGate in `isonome/praxis/delegation.py` — when the confidence calibrator's ECE exceeds a threshold (default 0.15), high-risk actions are delegated to subagents instead of executed directly.
+
+**Key Design Decisions**:
+- 5 operating modes: UNCALIBRATED, WELL_CALIBRATED, MODERATE, OVERCONFIDENT, UNDERCONFIDENT
+- Overconfident systems delegate at MODERATE+ risk (threshold=2) — they over-estimate capability
+- Underconfident systems delegate at HIGH+ risk (threshold=3) — risk classifications still trusted
+- TRIVIAL risk always executes directly regardless of calibration
+- Phase 1.7 runs after risk gate (Phase 1) and confidence gate (Phase 1.5), before parallelism (Phase 2)
+- Delegated actions are marked BLOCKED and tracked via DelegationRecord for feedback
+
+**Cross-pillar pipeline**: Cognition (ECE/bias) → Praxis (delegation decision) → Cognition (delegation record feedback)
+
+**Tests**: 895 total (74 new), all passing. Commit ab16d3b pushed to origin main.
+
+**Bug Found & Fixed**: PraxisPillar.__init__ referenced `delegation_gate` without it being a parameter — added the parameter and docstring.
+
+**Pattern Discovered**: Delegation gate and risk gate interact — actions blocked by the risk gate are never considered for delegation. This is correct: the risk gate already prevents execution, so delegating would be redundant.
+
+
+## Session: 2026-06-04 — iter-020 Delegation Outcome Tracking
+
+**Agent:** isonome-framework cron (Role A: Improvement)
+**Commit:** ea88642 + fac9a45 + d1522a5 (pushed to origin/main)
+
+### Work Completed
+1. **Fixed stress feedback test bug** (3eecbde): Tests `test_stress_feedback_when_drifted` and `test_stress_feedback_disabled` were broken because `EquilibriumEngine.__init__` resets all axis positions to `default_position`. Fixed by using `engine.apply_feedback()` to create real drift after construction.
+2. **Implemented iter-020: Delegation Outcome Tracking** (ea88642): New `DelegationOutcome` dataclass + `record_outcome()` on `DelegationGate` that feeds back to the calibrator + dynamic ECE threshold adaptation based on delegation accuracy (α=0.02, bounds [0.05, 0.5], rolling window of 50). Full serialization round-trip support.
+3. **Cross-pillar integration tests** (fac9a45): 7 tests for the delegation → calibrator feedback loop using real `ConfidenceCalibrator`.
+4. **Serialized iteration MD** (d1522a5): iteration-020-delegation-outcome-tracking.md
+
+### Key Discovery
+- `EquilibriumEngine.__init__` always resets axis positions to `default_position` (line 684-686). Tests that need non-default positions must use `apply_feedback()` after construction, not set `position` in the axis constructor. This is a known pitfall from the skill doc.
+
+### Test Count
+- Before: 957 tests
+- After: 1003 tests (+46 new)
+
+### Quality Rating
+- iter-020 delegation outcome tracking: **4/5** — Clean implementation, well-tested, conservative adaptation. Would be 5/5 with a live simulation demo.
+
