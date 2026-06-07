@@ -261,3 +261,54 @@ Feedback → Engine.apply_feedback()
 [RESEARCH] 2026-06-05 — Deep research on 1-Bit Transformers for QML: surveyed 20+ arXiv papers (BitNet lineage b1.0→b1.58→2B4T, FBI-LLM, BitDistill, BitRL, hardware accelerators, QML encoding/barren plateaus). Identified green-field opportunity: no paper combines 1-bit weights with quantum attention. Proposed BitQuant architecture (1-bit classical FFN + quantum attention), compiled 7-phase research roadmap, documented ternary-to-quantum structural isomorphism and barren plateau mitigation insight. | blockers: 0 | discoveries: 2 | bank entries: 3
 
 
+
+[RESEARCH] 2026-06-07 — Deep research on Non-Transformer Architectures for Robotics Control (topics 2.8+2.9): surveyed 34+ arXiv papers across JEPA world models (V-JEPA 2/2.1, LeJEPA, MC-JEPA, VLA-JEPA, Demo-JEPA, UWM-JEPA, Causal-JEPA, Sub-JEPA, UR-JEPA, seq-JEPA, CLEAR/Drive-JEPA, value-guided JEPA, Gaussian-constrained LeJEPA), Mamba/SSM for robotics (HuMam humanoid locomotion, M²GRPO multi-agent underwater, FlowRAM diffusion policy, CAMRL social nav, Mamba imitation encoder), RWKV recurrent architectures (DREAMSTATE editable world model states, Belief-State RWKV for uncertainty-aware RL), VLA advances (OpenVLA, Octo, WorldFly, TempoVLA, AffordanceVLA, RD-VLA iterative refinement, LoopVLA recurrent feedback), and sim-to-real (MoSA anisotropic stress, CoRMA semantic contact context). Proposed Predictive-SSM architecture combining JEPA world model + Mamba temporal backbone + belief-state uncertainty + equilibrium-gated compute allocation. Identified 8 open research questions. | blockers: 0 | discoveries: 4 | bank entries: 5
+
+### DISCOVERY: LeJEPA linear identifiability — 2026-06-07
+- **Finding**: LeJEPA (alignment + Gaussian regularization) provably linearly recovers the world's latent variables from nonlinear observations. Among all additive-noise transition worlds, the Gaussian is the unique distribution for which this holds. This means JEPA-pretrained encoders produce structurally interpretable latent spaces.
+- **Impact**: Planning in JEPA latent space is well-conditioned — no nonlinear entanglement. Uncertainty quantification is natural (mean + covariance of the Gaussian). This is the first formal proof that JEPA learns a true world model, not just useful features.
+- **Discovered by**: isonome-research agent (arXiv:2605.26379)
+- **Validation**: confirmed (published theorem with proof)
+- **Source**: content/robotics/non-transformer-architectures-robotics.md
+
+### DISCOVERY: DREAMSTATE — RWKV hidden states are editable world models — 2026-06-07
+- **Finding**: The RWKV recurrent hidden state can be edited via conditional diffusion to inject knowledge, correct beliefs, and modify spatial/temporal reasoning. The hidden state is not just a memory buffer but a compressed world representation.
+- **Impact**: Robot episodic memory can store RWKV states (compressed vector) instead of text descriptions. Recalling a past experience means loading the state vector and continuing inference from that cognitive state — "flashback" reasoning.
+- **Discovered by**: isonome-research agent (arXiv:2601.19221)
+- **Validation**: confirmed (published with empirical demonstrations)
+- **Source**: content/robotics/non-transformer-architectures-robotics.md
+
+### DISCOVERY: Belief-State RWKV provides per-step uncertainty for calibration — 2026-06-07
+- **Finding**: Reformulating RWKV hidden state as a belief state (μ_t, Σ_t) — mean and covariance — provides per-step, per-token uncertainty estimation. The covariance Σ_t grows under ambiguity and shrinks under informative observations, naturally tracking epistemic uncertainty.
+- **Impact**: The isonome DelegationGate could use trace(Σ_t) as its calibration signal instead of binned ECE, eliminating the binning artifact and providing true real-time calibration. This would enable fine-grained delegation decisions at every control step.
+- **Discovered by**: isonome-research agent (arXiv:2604.09671)
+- **Validation**: confirmed (published with RL experiments)
+- **Source**: content/robotics/non-transformer-architectures-robotics.md
+
+### DISCOVERY: SSM-for-time, attention-for-space is the emerging robotics architecture pattern — 2026-06-07
+- **Finding**: Across HuMam, M²GRPO, FlowRAM, and CAMRL, a consistent pattern emerges: Mamba/SSM handles temporal processing (O(1) per step, grows with episode length), while attention (if used) handles spatial/cross-agent coordination (bounded context, O(N²) is affordable). No paper uses attention for temporal processing when SSM is available.
+- **Impact**: The isonome JEPALayer architecture should adopt SSM for temporal backbone (replacing the current frozen-VLA-only approach) and reserve any attention for cross-pillar or multi-agent coordination, not per-step inference.
+- **Discovered by**: isonome-research agent (synthesis of 4+ papers)
+- **Validation**: confirmed (consistent across independent papers)
+- **Source**: content/robotics/non-transformer-architectures-robotics.md
+
+### PATTERN: SSM-for-time attention-for-space — 2026-06-07
+- **What**: In robot policy architectures, state-space models (Mamba/SSM) should handle temporal sequence processing (O(1) per step, favorable for long episodes), while attention mechanisms should be reserved for spatial coordination (bounded context like scene size or agent count). Never use attention for temporal processing when SSM is available.
+- **Applies to**: JEPALayer, Praxis pillar, any robot policy architecture with temporal and spatial components
+- **Source**: content/robotics/non-transformer-architectures-robotics.md (synthesis of HuMam, M²GRPO, FlowRAM, CAMRL)
+- **Quality**: ★★★★ (consistent across 4+ independent papers, no counterexamples found)
+- **Usage count**: 0
+
+### PATTERN: Equilibrium-gated compute allocation — 2026-06-07
+- **What**: The number of recurrent refinement passes (1, 3, or 5) in a robot policy should be controlled by the equilibrium engine's tension level: low tension → 1 pass (reflex), medium tension → 3 passes (deliberate), high tension → 5 passes + JEPA world model rollouts (explore). This creates a continuous compute controller rather than a discrete mode switch.
+- **Applies to**: Any architecture with test-time compute scaling (RD-VLA, LoopVLA pattern), the isonome EquilibriumEngine
+- **Source**: content/robotics/non-transformer-architectures-robotics.md (proposed architecture)
+- **Quality**: ★★ (theoretically motivated, not yet empirically validated)
+- **Usage count**: 0
+
+### PATTERN: JEPA world model + SSM inference = predictive-SSM — 2026-06-07
+- **What**: Combining JEPA-pretrained visual encoder (world model understanding) with Mamba/SSM temporal backbone (O(1) per-step inference) and belief-state uncertainty (calibration) creates a robot policy architecture with linear identifiability, real-time control, and per-step uncertainty — three properties no existing single architecture provides.
+- **Applies to**: JEPALayer upgrade path, any real-time robot control system
+- **Source**: content/robotics/non-transformer-architectures-robotics.md (proposed architecture)
+- **Quality**: ★★ (theoretically sound, not yet implemented)
+- **Usage count**: 0

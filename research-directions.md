@@ -214,6 +214,14 @@ Tracking relationships with David Shan (YC alum, Cladoc), Molly O'Shea (Sourcery
 ---
 
 ## Completed Research
+### 2.8 — 2026-06-07
+- **Findings**: content/robotics/non-transformer-architectures-robotics.md
+- **Publishability**: ★★★ | **Contribution**: ◆◆◆
+
+### 2.9 — 2026-06-07
+- **Findings**: content/robotics/non-transformer-architectures-robotics.md (combined with 2.8)
+- **Publishability**: ★★★ | **Contribution**: ◆◆◆
+
 <!-- Move entries here once researched. Format:
 ### [Topic Slug] — [Date]
 - **Findings**: [path/to/research.md]
@@ -225,8 +233,8 @@ Tracking relationships with David Shan (YC alum, Cladoc), Molly O'Shea (Sourcery
 1. **1.3** 1-Bit Transformers for QML — ★★★ ◆◆◆
 2. **1.6** Benchmarks & Protocols for QML — ★★★ ◆◆◆
 3. **3.3** Kernel Auto-Calibration for Sim-to-Real — ★★★ ◆◆◆
-4. **2.8** JEPA for Robotics Reasoning — ★★★ ◆◆◆
-5. **2.9** Transformer Alternatives for Robotics — ★★★ ◆◆◆
+4. ~~**2.8** JEPA for Robotics Reasoning~~ — ★★★ ◆◆◆ ✓ (see content/robotics/non-transformer-architectures-robotics.md)
+5. ~~**2.9** Transformer Alternatives for Robotics~~ — ★★★ ◆◆◆ ✓ (see content/robotics/non-transformer-architectures-robotics.md)
 6. **1.5** Semantic Hashing → Quantum — ★★★ ◆◆◆
 7. **1.2** Layer Importance Analysis — ★★★ ◆◆◆
 8. **2.1** RecursiveMAS Framework — ★★☆ ◆◆◆

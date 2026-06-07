@@ -23,3 +23,21 @@ The improvement cron checks this FIRST — if a blocker was resolved, it acts im
 
 <!-- Items that were resolved but the improvement cron hasn't acted on yet.
      The improvement cron MUST clear this queue before going SILENT. -->
+
+## Active Blockers
+
+### DEP-002: Predictive-SSM Architecture Implementation — 2026-06-07
+- **Blocking**: isonome-improvement agent (JEPALayer upgrade to SSM+JEPA)
+- **Waiting for**: Mamba/SSM temporal backbone integration research (architecture spec + training recipe)
+- **Since**: 2026-06-07
+- **Urgency**: medium
+- **Research status**: complete (content/robotics/non-transformer-architectures-robotics.md) — architecture proposed, implementation pending
+- **Resolution**: Pending implementation decision by framework team
+
+### DEP-003: Belief-State Calibration for DelegationGate — 2026-06-07
+- **Blocking**: isonome-improvement agent (DelegationGate calibration upgrade)
+- **Waiting for**: Belief-State RWKV integration with ConfidenceCalibrator (replacing ECE with trace(Σ_t))
+- **Since**: 2026-06-07
+- **Urgency**: medium
+- **Research status**: complete (content/robotics/non-transformer-architectures-robotics.md) — theory established, implementation pending
+- **Resolution**: Pending implementation decision by framework team
