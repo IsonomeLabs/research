@@ -312,3 +312,33 @@ Feedback → Engine.apply_feedback()
 - **Source**: content/robotics/non-transformer-architectures-robotics.md (proposed architecture)
 - **Quality**: ★★ (theoretically sound, not yet implemented)
 - **Usage count**: 0
+
+### DISCOVERY: DelegationGate is a proto-recursive spawning mechanism — 2026-06-10
+- **Finding**: The isonome DelegationGate already implements the decision logic for recursive agent spawning (DELEGATE → spawn sub-agent, EXECUTE → handle directly), but the actual spawning mechanism (SubAgentPool) does not exist yet. The gate marks actions as "should be delegated" but they sit in limbo as BLOCKED with no real sub-agent to execute them.
+- **Impact**: Implementing a SubAgentPool that actually spawns agents when the gate says DELEGATE would close the loop and create a real recursive multi-agent system. This is the single highest-leverage integration for the framework.
+- **Discovered by**: isonome-research agent (RecursiveMAS architecture survey)
+- **Validation**: confirmed (code review of delegation.py shows DELEGATE decision but no sub-agent spawning)
+- **Source**: content/multi-agent/recursive-mas-framework.md
+
+### DISCOVERY: Recursion depth bounding via monotonically increasing depth counter prevents delegation deadlock — 2026-06-10
+- **Finding**: Circular delegation (Agent A delegates to Agent B which delegates back to A) is impossible if each delegation carries a monotonically increasing depth counter that the recipient checks against a max_depth bound. Since the counter only increases and is bounded, the recursion must terminate.
+- **Impact**: This eliminates an entire class of deadlocks in recursive agent systems without requiring cycle detection or graph analysis. Simpler and more robust than any alternative.
+- **Discovered by**: isonome-research agent (RecursiveMAS architecture survey)
+- **Validation**: confirmed (proof by construction — depth counter is integer, monotonically increasing, bounded above)
+- **Source**: content/multi-agent/recursive-mas-framework.md
+
+### PATTERN: Equilibrium-gated sub-agent lifecycle — 2026-06-10
+- **What**: Parent agents should spawn sub-agents only when stress_level < 0.6 (calm enough to manage children), buffer sub-agent outcomes during high tension (stress > 0.3), and terminate non-critical sub-agents when resource pressure is high. This creates natural backpressure: spawning → pressure → termination → calm → spawning.
+- **Applies to**: Any recursive agent system with shared resource constraints, the isonome EquilibriumEngine
+- **Source**: content/multi-agent/recursive-mas-framework.md (proposed architecture)
+- **Quality**: ★★ (theoretically motivated, not yet implemented)
+- **Usage count**: 0
+
+### PATTERN: Calibration inheritance with decay for sub-agent bootstrapping — 2026-06-10
+- **What**: When a parent agent spawns a sub-agent, the child's ConfidenceCalibrator should be bootstrapped with the parent's recent prediction-outcome pairs at 0.5× confidence decay. This lets the child start in MODERATE mode (not UNCALIBRATED), enabling faster recursive delegation.
+- **Applies to**: DelegationGate, any agent system where sub-agents need calibration before they can delegate
+- **Source**: content/multi-agent/recursive-mas-framework.md (proposed architecture)
+- **Quality**: ★★ (theoretically motivated, not yet implemented)
+- **Usage count**: 0
+
+[RESEARCH] 2026-06-10 — Deep research on RecursiveMAS Framework (topic 2.1): surveyed OS process models, actor model (Erlang/OTP supervision trees), hierarchical RL (options framework), agentic frameworks (AutoGen, CrewAI, OpenAI Swarm), recursive neural networks. Mapped existing isonome components to recursive architecture (DelegationGate=spawning decision, EquilibriumEngine=lifecycle governor, MessageBus=inter-agent communication, TensionEventLog=audit trail). Proposed Equilibrium-Gated Recursive Agent Architecture (EGRAA) with 5 phases: sub-agent pool, equilibrium-gated lifecycle, recursion budget with trust decay, calibration inheritance, cross-pillar integration. Identified 6 open research questions. Key finding: DelegationGate is a proto-recursive mechanism — it decides when to delegate but has no actual sub-agent to delegate to. Implementing SubAgentPool is the highest-leverage integration. | blockers: 0 | discoveries: 2 | bank entries: 5

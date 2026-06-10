@@ -222,6 +222,14 @@ Tracking relationships with David Shan (YC alum, Cladoc), Molly O'Shea (Sourcery
 - **Findings**: content/robotics/non-transformer-architectures-robotics.md (combined with 2.8)
 - **Publishability**: ★★★ | **Contribution**: ◆◆◆
 
+### 2.1 — 2026-06-10
+- **Findings**: content/multi-agent/recursive-mas-framework.md
+- **Publishability**: ★★☆ | **Contribution**: ◆◆◆
+
+### 2.5 — 2026-06-08
+- **Findings**: content/multi-agent/schema-evolution-distributed-agents.md
+- **Publishability**: ★★☆ | **Contribution**: ◆◆◆
+
 <!-- Move entries here once researched. Format:
 ### [Topic Slug] — [Date]
 - **Findings**: [path/to/research.md]
@@ -237,6 +245,8 @@ Tracking relationships with David Shan (YC alum, Cladoc), Molly O'Shea (Sourcery
 5. ~~**2.9** Transformer Alternatives for Robotics~~ — ★★★ ◆◆◆ ✓ (see content/robotics/non-transformer-architectures-robotics.md)
 6. **1.5** Semantic Hashing → Quantum — ★★★ ◆◆◆
 7. **1.2** Layer Importance Analysis — ★★★ ◆◆◆
-8. **2.1** RecursiveMAS Framework — ★★☆ ◆◆◆
+8. ~~**2.1** RecursiveMAS Framework~~ — ★★☆ ◆◆◆ ✓ (see content/multi-agent/recursive-mas-framework.md)
 9. **3.2** Simulation Software for Agentic Robotics — ★★☆ ◆◆◆
-10. **2.5** Schema Evolution in Agent Systems — ★★☆ ◆◆◆
+10. ~~**2.5** Schema Evolution in Agent Systems~~ — ★★☆ ◆◆◆ ✓ (see content/multi-agent/schema-evolution-distributed-agents.md)
+11. **2.2** Quadcameral / Reflexive Architecture — ★★☆ ◆◆◇
+12. **2.7** Graph Representations for Agent Networks — ★★☆ ◆◆◇
