@@ -379,3 +379,34 @@ Feedback → Engine.apply_feedback()
 - **Usage count**: 0
 
 [RESEARCH] 2026-06-11 — Deep research on Semantic Hashing → Quantum (topic 1.5): surveyed semantic hashing evolution (Salakhutdinov & Hinton 2007 → ITQ → HashNet → modern contrastive hashing), quantum approximate nearest neighbor (Grover-based QANN, QRAM), and the exact isomorphism between k-bit binary codes and k-qubit basis states. Proposed Quantum-Semantic Memory Index (QSMI) with tiered classical-quantum retrieval (exact→quantum→linear). Mapped 6 isonome integration points (Mneme recall, CalibrationCache, MorphologyAnalyzer, EquilibriumEngine, DelegationGate, TensionEventLog). Key finding: binary hash codes are quantum basis states with zero conversion overhead — semantic hashing IS the classical interface to quantum memory. 8 open research questions, 5-phase roadmap. | blockers: 0 | discoveries: 2 | bank entries: 4
+
+### DISCOVERY: The isonome EquilibriumEngine IS the Global Workspace arbitrator — 2026-06-14
+- **Finding**: The EquilibriumEngine implements the Global Workspace Theory (Baars, 1988) pattern: it receives Feedback from all pillars (competition for broadcast), determines which pillar needs attention via tension-based priority (broadcast selection), and distributes PillarEquilibriumView to each pillar (broadcast). The Signal bus between pillars IS the global workspace.
+- **Impact**: This provides a formal cognitive science foundation for isonome's core architecture. The EquilibriumEngine is not just a PID controller — it is an implementation of a well-studied model of consciousness and information integration.
+- **Discovered by**: isonome-research agent (Quadcameral/Reflexive Architecture survey)
+- **Validation**: confirmed (architectural mapping: Feedback=competition, tension=priority, PillarEquilibriumView=broadcast, Signal bus=workspace)
+- **Source**: content/multi-agent/quadcameral-reflexive-architecture.md
+
+### DISCOVERY: Bicameral collapse is the formal model for agent panic — 2026-06-14
+- **Finding**: When an agent bypasses Deliberation and Reflection (going directly from Perception→Action), it degrades from quadcameral to bicameral operation. This is the AI equivalent of panic: fast but unreflective behavior. Jaynes' theory predicts this — bicameral systems fail under complexity. The ConvergenceDetector partially detects this (oscillation detection), but no explicit "bicameral collapse" detector exists in isonome.
+- **Impact**: Adding a bicameral collapse detector would catch when agents are acting reflexively without deliberation — critical for safety in high-stakes environments.
+- **Discovered by**: isonome-research agent (Quadcameral/Reflexive Architecture survey)
+- **Validation**: speculative (theoretical prediction from Jaynes mapping; no empirical test yet)
+- **Source**: content/multi-agent/quadcameral-reflexive-architecture.md
+
+### PATTERN: Two-timescale stochastic approximation for chamber dynamics — 2026-06-14
+- **What**: The four quadcameral chambers naturally separate into two timescales: fast (Perception ~100Hz, Action 1kHz) and slow (Deliberation on-demand, Reflection every-tick-but-damped). Borkar's 1998 two-timescale stochastic approximation guarantees convergence: if fast chambers see slow chambers as quasi-static and slow chambers see fast chambers as converged, the joint system reaches equilibrium.
+- **Applies to**: Any multi-rate agent architecture, isonome's pillar+layer system, safety-critical systems with mixed-frequency processing
+- **Source**: content/multi-agent/quadcameral-reflexive-architecture.md (Borkar 1998 formalism)
+- **Quality**: ★★★ (proven convergence result from control theory)
+- **Usage count**: 0
+
+### PATTERN: ReflectionPillar as the metaobject of the agent — 2026-06-14
+- **What**: A formal ReflectionPillar (the proposed fourth pillar: ἀναστοχασμός) would be the metaobject of the agent in the Metaobject Protocol sense (Kiczales 1991): it holds reified representations of other pillars' state (PillarEquilibriumView), intercepts inter-chamber messages (via EquilibriumEngine), and can modify pillar policies structurally (via tension position updates). This is currently distributed across EquilibriumEngine, ConvergenceDetector, and ConfidenceCalibrator.
+- **Applies to**: Isonome framework architecture, any agent system needing formal meta-cognition
+- **Source**: content/multi-agent/quadcameral-reflexive-architecture.md
+- **Quality**: ★★ (theoretically motivated, implementation roadmap provided)
+- **Usage count**: 0
+
+[RESEARCH] 2026-06-14 — Deep research on Quadcameral / Reflexive Architecture (topic 2.2): surveyed Jaynes' Bicameral Mind, Kahneman/Stanovich dual/triple-process theory, Baars' Global Workspace Theory, SDN control/data plane separation, reflexive architectures (MAPE-K, metaobject protocols), and meta-cognition in AI. Mapped all theories to isonome's existing four-chamber architecture and three-pillar equilibrium system. Key finding: the EquilibriumEngine IS the Global Workspace arbitrator from Baars' theory — providing formal cognitive science grounding for isonome's core mechanism. Proposed ReflectionPillar (fourth pillar: ἀναστοχασμός) extracting ConvergenceDetector and ConfidenceCalibrator into a standalone meta-cognitive pillar. 5-phase integration roadmap. 7 open research questions. 3 new dependency entries (DEP-004, DEP-005, DEP-006). | blockers: 3 added (all medium/low urgency, research-complete) | discoveries: 2 | bank entries: 4
+

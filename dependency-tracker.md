@@ -26,6 +26,30 @@ The improvement cron checks this FIRST — if a blocker was resolved, it acts im
 
 ## Active Blockers
 
+### DEP-004: ReflectionPillar (Fourth Pillar) Extraction — 2026-06-14
+- **Blocking**: isonome-improvement agent (formalizing four-chamber architecture)
+- **Waiting for**: Quadcameral architecture research (theory + integration roadmap)
+- **Since**: 2026-06-14
+- **Urgency**: medium
+- **Research status**: complete (content/multi-agent/quadcameral-reflexive-architecture.md) — unified theory + 5-phase integration roadmap
+- **Resolution**: Pending implementation decision by framework team
+
+### DEP-005: Global Workspace Broadcast Mechanism — 2026-06-14
+- **Blocking**: isonome-improvement agent (cross-pillar communication upgrade)
+- **Waiting for**: Broadcast-based inter-pillar communication design (Global Workspace Theory mapping)
+- **Since**: 2026-06-14
+- **Urgency**: low
+- **Research status**: complete (content/multi-agent/quadcameral-reflexive-architecture.md — Section 3.3)
+- **Resolution**: Pending implementation decision by framework team
+
+### DEP-006: EVOC Meta-Reasoning for Deliberation Stopping — 2026-06-14
+- **Blocking**: isonome-improvement agent (deliberation budget control)
+- **Waiting for**: Expected Value of Computation formalism for LLM deliberation stopping criterion
+- **Since**: 2026-06-14
+- **Urgency**: low
+- **Research status**: complete (content/multi-agent/quadcameral-reflexive-architecture.md — Section 2.6)
+- **Resolution**: Pending implementation decision by framework team
+
 ### DEP-002: Predictive-SSM Architecture Implementation — 2026-06-07
 - **Blocking**: isonome-improvement agent (JEPALayer upgrade to SSM+JEPA)
 - **Waiting for**: Mamba/SSM temporal backbone integration research (architecture spec + training recipe)
