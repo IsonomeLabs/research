@@ -48,6 +48,13 @@ or add a dated note explaining why there's nothing new. No silent runs on the ba
 - **Quality**: ★★★★★ (59 dedicated tests + 1062 full-suite green)
 - **Usage count**: 1
 
+### PATTERN: Network graph representation for multi-agent equilibrium — 2026-06-13
+- **What**: Agent networks should be modeled as directed graphs (trust, task, knowledge, communication) with spectral analysis (algebraic connectivity λ₂) to detect global network stability that individual pillar equilibrium cannot see
+- **Applies to**: RecursiveMAS, DelegationGate, any multi-agent coordination system
+- **Source**: content/multi-agent/graph-representations-agent-networks.md
+- **Quality**: ★★★ (research-complete, implementation pending)
+- **Usage count**: 0
+
 ## Discoveries
 
 <!-- Format:
