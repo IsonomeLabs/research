@@ -410,3 +410,11 @@ Feedback → Engine.apply_feedback()
 
 [RESEARCH] 2026-06-14 — Deep research on Quadcameral / Reflexive Architecture (topic 2.2): surveyed Jaynes' Bicameral Mind, Kahneman/Stanovich dual/triple-process theory, Baars' Global Workspace Theory, SDN control/data plane separation, reflexive architectures (MAPE-K, metaobject protocols), and meta-cognition in AI. Mapped all theories to isonome's existing four-chamber architecture and three-pillar equilibrium system. Key finding: the EquilibriumEngine IS the Global Workspace arbitrator from Baars' theory — providing formal cognitive science grounding for isonome's core mechanism. Proposed ReflectionPillar (fourth pillar: ἀναστοχασμός) extracting ConvergenceDetector and ConfidenceCalibrator into a standalone meta-cognitive pillar. 5-phase integration roadmap. 7 open research questions. 3 new dependency entries (DEP-004, DEP-005, DEP-006). | blockers: 3 added (all medium/low urgency, research-complete) | discoveries: 2 | bank entries: 4
 
+
+
+### PATTERN: Bicameral proposal-critique invariants — 2026-06-14
+- **What**: Three invariants (Opposition of Interest, Independence of Critique, Timescale Separation) must hold for any proposal-critique subsystem to prevent runaway, sycophancy, or stale optimization
+- **Applies to**: DelegationGate, SafetyGovernor, EquilibriumEngine, any system with competing objectives
+- **Source**: content/multi-agent/bicameral-architecture-designs.md
+- **Quality**: ★★★ (formal analysis of six cross-domain patterns, not yet empirically validated in framework)
+- **Usage count**: 0

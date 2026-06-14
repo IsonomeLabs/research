@@ -65,3 +65,20 @@ The improvement cron checks this FIRST — if a blocker was resolved, it acts im
 - **Urgency**: medium
 - **Research status**: complete (content/robotics/non-transformer-architectures-robotics.md) — theory established, implementation pending
 - **Resolution**: Pending implementation decision by framework team
+
+
+### DEP-007: Bicameral Collapse Detector Implementation — 2026-06-14
+- **Blocking**: isonome-improvement agent (formal detection of bicameral collapse patterns)
+- **Waiting for**: Bicameral architecture research (three-invariant model + collapse indicators)
+- **Since**: 2026-06-14
+- **Urgency**: medium
+- **Research status**: complete (content/multi-agent/bicameral-architecture-designs.md — Section 4.3 + Phase 1 integration roadmap)
+- **Resolution**: Pending implementation decision by framework team
+
+### DEP-008: Constitutional Equilibrium Guard — 2026-06-14
+- **Blocking**: isonome-improvement agent (bounded equilibrium adjustments)
+- **Waiting for**: Constitutional layer design for tension envelope enforcement
+- **Since**: 2026-06-14
+- **Urgency**: low
+- **Research status**: complete (content/multi-agent/bicameral-architecture-designs.md — Section 4.2 + Phase 2 integration roadmap)
+- **Resolution**: Pending implementation decision by framework team
